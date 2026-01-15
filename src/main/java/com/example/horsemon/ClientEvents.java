@@ -1,46 +1,27 @@
-plugins {
-    id 'java-library'
-    id 'eclipse'
-    id 'idea'
-    id 'net.neoforged.moddev' version '1.0.14'
-}
+package com.example.horsemon;
 
-version = '1.0.0'
-group = 'com.example.horsemon'
-base { archivesName = 'horsemon' }
+import net.minecraft.client.KeyMapping;
+import com.mojang.blaze3d.platform.InputConstants;
+import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
+import net.neoforged.neoforge.client.event.InputEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
+import org.lwjgl.glfw.GLFW;
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+public class ClientEvents {
+    public static final KeyMapping KEY_P = new KeyMapping("Привязать", GLFW.GLFW_KEY_P, "Horse Mod");
+    public static final KeyMapping KEY_V = new KeyMapping("Позвать", GLFW.GLFW_KEY_V, "Horse Mod");
 
-neoForge {
-    version = '21.1.5'
-
-    parchment {
-        mappingsVersion = '2024.07.28'
-        minecraftVersion = '1.21'
+    public static void onKeyRegister(RegisterKeyMappingsEvent event) {
+        event.register(KEY_P);
+        event.register(KEY_V);
     }
 
-    runs {
-        client {
-            client()
-            systemProperty 'neoforge.enabledGameTestNamespaces', 'horsemon'
+    public static void onKeyInput(InputEvent.Key event) {
+        if (KEY_P.consumeClick()) {
+            PacketDistributor.sendToServer(new HorsePacket(1));
+        }
+        if (KEY_V.consumeClick()) {
+            PacketDistributor.sendToServer(new HorsePacket(2));
         }
     }
-
-    mods {
-        horsemon {
-            sourceSet sourceSets.main
-        }
-    }
-}
-
-// ВОТ ЭТОТ БЛОК МЫ ДОБАВИЛИ
-dependencies {
-    // Говорим Gradle брать всё из папки libs
-    implementation fileTree(dir: 'libs', include: ['*.jar', '*.zip'])
-}
-
-sourceSets.main.resources { srcDir 'src/main/resources' }
-
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8'
 }
