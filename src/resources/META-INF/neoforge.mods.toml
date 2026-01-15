@@ -3,7 +3,22 @@ loaderVersion="[2,)"
 license="MIT"
 
 [[mods]]
-modId="horsemon"
-version="1.0.0"
-displayName="Personal Horse"
-description="Call your horse with P and V keys!"
+    modId="horsemon"
+    version="1.0.0"
+    displayName="Personal Horse"
+    authors="BONAN"
+    description="Call your horse with P and V keys!"
+
+[[dependencies.horsemon]]
+    modId="neoforge"
+    type="required"
+    versionRange="[21.1.5,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.horsemon]]
+    modId="minecraft"
+    type="required"
+    versionRange="[1.21.1,1.22)"
+    ordering="NONE"
+    side="BOTH"
