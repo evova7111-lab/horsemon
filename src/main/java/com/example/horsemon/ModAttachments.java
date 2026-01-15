@@ -10,6 +10,9 @@ import java.util.function.Supplier;
 
 public class ModAttachments {
     public static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, "horsemon");
+    
     public static final Supplier<AttachmentType<Optional<UUID>>> MY_HORSE = ATTACHMENT_TYPES.register("my_horse", 
-        () -> AttachmentType.builder(() -> Optional.<UUID>empty()).serialize(UUIDUtil.CODEC.optionalFieldOf("uuid").xmap(Optional::of, Optional::get)).build());
+        () -> AttachmentType.builder(() -> Optional.<UUID>empty())
+            .serialize(UUIDUtil.CODEC.optionalFieldOf("uuid").xmap(Optional::of, Optional::get).codec())
+            .build());
 }
