@@ -1,0 +1,59 @@
+plugins {
+    id 'java-library'
+    id 'eclipse'
+    id 'idea'
+    id 'net.neoforged.moddev' version '1.0.14' // Плагин для разработки NeoForge
+}
+
+version = '1.0.0'
+group = 'com.example.horsemon'
+base {
+    archivesName = 'horsemon'
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(21) // Для 1.21.1 нужна Java 21
+
+neoForge {
+    version = '21.1.5' // Актуальная версия NeoForge для 1.21.1
+
+    parchment {
+        mappingsVersion = '2024.07.28'
+        minecraftVersion = '1.21'
+    }
+
+    // Настройки запуска игры
+    runs {
+        client {
+            client()
+            systemProperty 'neoforge.enabledGameTestNamespaces', 'horsemon'
+        }
+
+        server {
+            server()
+            programArgument '--nogui'
+        }
+    }
+
+    // Регистрация ресурсов (текстуры, конфиги)
+    mods {
+        horsemon {
+            sourceSet sourceSets.main
+        }
+    }
+}
+
+// Чтобы ресурсы (json, png) подгружались правильно
+sourceSets.main.resources { srcDir 'src/main/resources' }
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Здесь можно добавлять зависимости от других модов, если нужно
+}
+
+// Кодировка для корректного отображения русского языка
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
